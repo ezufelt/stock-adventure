@@ -121,7 +121,7 @@ export default function Home() {
       <div className="slide-up">
         <EducationSection />
       </div>
-      
+
       {showChartModal && (
         <ChartModal
           chartSVG={chartSVG}
