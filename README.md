@@ -12,13 +12,13 @@ An educational web app that teaches kids about stock investing through an intera
 
 ## 📈 Portfolio Holdings
 
-| Stock | Company | Shares | Purchase Price | Total Investment |
-|-------|---------|--------|----------------|------------------|
-| 🍎 AAPL | Apple Inc. | 1 | $212.13 | $212.13 |
-| 🎮 RBLX | Roblox Corporation | 2 | $102.40 | $204.80 |
-| ₿ IBIT | iShares Bitcoin Trust ETF | 3 | $62.26 | $186.78 |
-| 🎨 ETSY | Etsy, Inc. | 4 | $53.29 | $213.16 |
-| 👻 SNAP | Snap Inc. | 20 | $9.38 | $187.60 |
+| Stock   | Company                   | Shares | Purchase Price | Total Investment |
+| ------- | ------------------------- | ------ | -------------- | ---------------- |
+| 🍎 AAPL | Apple Inc.                | 1      | $212.13        | $212.13          |
+| 🎮 RBLX | Roblox Corporation        | 2      | $102.40        | $204.80          |
+| ₿ IBIT  | iShares Bitcoin Trust ETF | 3      | $62.26         | $186.78          |
+| 🎨 ETSY | Etsy, Inc.                | 4      | $53.29         | $213.16          |
+| 👻 SNAP | Snap Inc.                 | 20     | $9.38          | $187.60          |
 
 **Total Investment**: $1,004.47 • **Purchase Date**: July 2, 2025
 

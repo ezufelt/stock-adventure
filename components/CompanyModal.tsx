@@ -44,8 +44,23 @@ export default function CompanyModal({
       }
     };
 
+    // Focus management
+    const activeElement = document.activeElement as HTMLElement;
+    const modalElement = document.querySelector(
+      '[role="dialog"]'
+    ) as HTMLElement;
+    if (modalElement) {
+      modalElement.focus();
+    }
+
     document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      // Restore focus
+      if (activeElement) {
+        activeElement.focus();
+      }
+    };
   }, [onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -58,13 +73,23 @@ export default function CompanyModal({
     <div
       className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-5"
       onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="company-modal-title"
+      aria-describedby="company-modal-description"
     >
-      <div className="relative max-h-[90vh] w-full max-w-2xl animate-[modalSlideIn_0.3s_ease-out] overflow-y-auto rounded-3xl bg-white shadow-2xl">
+      <div
+        className="relative max-h-[90vh] w-full max-w-2xl animate-[modalSlideIn_0.3s_ease-out] overflow-y-auto rounded-3xl bg-white shadow-2xl"
+        tabIndex={-1}
+      >
         <div className="border-gold flex items-center justify-between border-b-2 p-8 pb-4">
           <div className="flex items-center gap-4">
             <span className="text-5xl">{company.logo}</span>
             <div>
-              <h2 className="m-0 text-2xl font-bold text-gray-800">
+              <h2
+                id="company-modal-title"
+                className="m-0 text-2xl font-bold text-gray-800"
+              >
                 {company.name}
               </h2>
               <span className="bg-gold-light mt-1 inline-block rounded-lg px-3 py-1 font-bold text-gray-800">
@@ -75,12 +100,19 @@ export default function CompanyModal({
           <button
             className="cursor-pointer text-3xl font-bold text-gray-400 transition-colors duration-300 hover:text-gray-800"
             onClick={onClose}
+            aria-label="Close company information modal"
+            type="button"
           >
             ×
           </button>
         </div>
 
         <div className="font-comic p-8">
+          <div id="company-modal-description" className="sr-only">
+            Company information modal for {company.name} ({symbol}). Contains
+            details about the company, what they do, investment rationale, fun
+            facts, and your current investment position.
+          </div>
           <div className="mb-5">
             <h3 className="mb-3 text-xl text-pink-500">About {company.name}</h3>
             <p className="leading-relaxed text-gray-800">

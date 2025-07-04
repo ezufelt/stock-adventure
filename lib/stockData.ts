@@ -66,12 +66,24 @@ export async function getStockData(symbol: string): Promise<StockData> {
     });
 
     if (!response.ok) {
+      console.error(`Yahoo API HTTP error for ${symbol}:`, {
+        status: response.status,
+        statusText: response.statusText,
+        url: `${url}?${params}`,
+      });
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
 
     if (!data.chart || !data.chart.result || data.chart.result.length === 0) {
+      console.error(`Yahoo API invalid response structure for ${symbol}:`, {
+        hasChart: !!data.chart,
+        hasResult: !!data.chart?.result,
+        resultLength: data.chart?.result?.length || 0,
+        responseKeys: Object.keys(data),
+        url: `${url}?${params}`,
+      });
       return {
         symbol: symbol,
         price: null,
@@ -88,6 +100,13 @@ export async function getStockData(symbol: string): Promise<StockData> {
     const meta = result.meta;
 
     if (!quote || !quote.close || quote.close.length === 0) {
+      console.error(`Yahoo API missing quote data for ${symbol}:`, {
+        hasQuote: !!quote,
+        hasClose: !!quote?.close,
+        closeLength: quote?.close?.length || 0,
+        metaSymbol: meta?.symbol,
+        url: `${url}?${params}`,
+      });
       return {
         symbol: symbol,
         price: null,
@@ -125,6 +144,11 @@ export async function getStockData(symbol: string): Promise<StockData> {
       shares: PORTFOLIO_POSITIONS[symbol]?.shares || 0,
     };
   } catch (error) {
+    console.error(`Yahoo API error for ${symbol}:`, {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      url: `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`,
+    });
     return {
       symbol: symbol,
       price: null,
@@ -161,12 +185,27 @@ export async function getHistoricalData(symbol: string): Promise<number[]> {
     });
 
     if (!response.ok) {
+      console.error(`Yahoo API HTTP error for ${symbol} (historical):`, {
+        status: response.status,
+        statusText: response.statusText,
+        url: `${url}?${params}`,
+      });
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
 
     if (!data.chart || !data.chart.result || data.chart.result.length === 0) {
+      console.error(
+        `Yahoo API invalid response structure for ${symbol} (historical):`,
+        {
+          hasChart: !!data.chart,
+          hasResult: !!data.chart?.result,
+          resultLength: data.chart?.result?.length || 0,
+          responseKeys: Object.keys(data),
+          url: `${url}?${params}`,
+        }
+      );
       return [];
     }
 
@@ -174,6 +213,14 @@ export async function getHistoricalData(symbol: string): Promise<number[]> {
     const quote = result.indicators?.quote?.[0];
 
     if (!quote || !quote.close) {
+      console.error(
+        `Yahoo API missing quote data for ${symbol} (historical):`,
+        {
+          hasQuote: !!quote,
+          hasClose: !!quote?.close,
+          url: `${url}?${params}`,
+        }
+      );
       return [];
     }
 
@@ -181,6 +228,11 @@ export async function getHistoricalData(symbol: string): Promise<number[]> {
       (price: number | null) => price !== null
     ) as number[];
   } catch (error) {
+    console.error(`Yahoo API error for ${symbol} (historical):`, {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      url: `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`,
+    });
     return [];
   }
 }
@@ -233,7 +285,10 @@ function generateChartDateLabels(): string[] {
   return dates;
 }
 
-function generateChartSVG(portfolioData: PortfolioData): string {
+function generateChartSVG(
+  portfolioData: PortfolioData,
+  altText?: string
+): string {
   try {
     const width = 800;
     const height = 400;
@@ -277,7 +332,7 @@ function generateChartSVG(portfolioData: PortfolioData): string {
 
     // Accessibility elements
     svg += `<title id="chart-title">Stock Price Performance - Last 30 Days</title>`;
-    svg += `<desc id="chart-desc">A line chart showing how stock prices changed over the last 30 days. Each colored line represents a different stock: ${Object.keys(portfolioData).join(', ')}.</desc>`;
+    svg += `<desc id="chart-desc">${altText || `A line chart showing how stock prices changed over the last 30 days. Each colored line represents a different stock: ${Object.keys(portfolioData).join(', ')}.`}</desc>`;
 
     // Title
     svg += `<text x="${width / 2}" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">Stock Price Performance - Last 30 Days</text>`;
@@ -381,7 +436,7 @@ export async function getAllPortfolioDataWithAltText(): Promise<PortfolioDataWit
   const { generateChartAltText } = await import('./chartAnalysis');
   const portfolioData = await getAllPortfolioData();
   const chartAltText = generateChartAltText(portfolioData);
-  const chartSVG = generateChartSVG(portfolioData);
+  const chartSVG = generateChartSVG(portfolioData, chartAltText);
 
   return {
     portfolioData,
