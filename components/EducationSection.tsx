@@ -6,11 +6,11 @@ export default function EducationSection() {
       </h2>
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
         <div className="border-dreamy-pink from-dreamy-pink magical-hover relative rounded-2xl border-4 bg-gradient-to-br to-pink-50 p-6 shadow-lg">
-          <div className="absolute -top-3 -right-3 rounded-full bg-white p-1 text-2xl shadow-md">
+          <div className="absolute -top-2 -right-2 rounded-full bg-white p-2 text-xl shadow-md">
             📈
           </div>
           <h3 className="mb-4 text-xl font-bold text-white drop-shadow-sm">
-            What is a Stock? 🏢
+            What is a Stock? <span className="ml-2">🏢</span>
           </h3>
           <p className="leading-relaxed text-white drop-shadow-sm">
             A stock is like owning a tiny piece of a company! When you buy Apple
@@ -18,11 +18,11 @@ export default function EducationSection() {
           </p>
         </div>
         <div className="border-dreamy-blue from-dreamy-blue magical-hover relative rounded-2xl border-4 bg-gradient-to-br to-blue-50 p-6 shadow-lg">
-          <div className="absolute -top-3 -right-3 rounded-full bg-white p-1 text-2xl shadow-md">
+          <div className="absolute -top-2 -right-2 rounded-full bg-white p-2 text-xl shadow-md">
             📊
           </div>
           <h3 className="mb-4 text-xl font-bold text-white drop-shadow-sm">
-            Why Do Prices Go Up and Down? 🎢
+            Why Do Prices Go Up and Down? <span className="ml-2">🎢</span>
           </h3>
           <p className="leading-relaxed text-white drop-shadow-sm">
             Stock prices change when people want to buy or sell. Good news makes
@@ -30,11 +30,11 @@ export default function EducationSection() {
           </p>
         </div>
         <div className="border-dreamy-yellow from-dreamy-yellow magical-hover relative rounded-2xl border-4 bg-gradient-to-br to-yellow-50 p-6 shadow-lg">
-          <div className="absolute -top-3 -right-3 rounded-full bg-white p-1 text-2xl shadow-md">
+          <div className="absolute -top-2 -right-2 rounded-full bg-white p-2 text-xl shadow-md">
             🧺
           </div>
           <h3 className="mb-4 text-xl font-bold text-gray-800 drop-shadow-sm">
-            Why Buy Different Stocks? 🌈
+            Why Buy Different Stocks? <span className="ml-2">🌈</span>
           </h3>
           <p className="leading-relaxed text-gray-800">
             Don&apos;t put all your eggs in one basket! We bought 5 different
@@ -42,11 +42,11 @@ export default function EducationSection() {
           </p>
         </div>
         <div className="border-dreamy-yellow from-dreamy-yellow magical-hover relative rounded-2xl border-4 bg-gradient-to-br to-yellow-50 p-6 shadow-lg">
-          <div className="absolute -top-3 -right-3 rounded-full bg-white p-1 text-2xl shadow-md">
+          <div className="absolute -top-2 -right-2 rounded-full bg-white p-2 text-xl shadow-md">
             ⏰
           </div>
           <h3 className="mb-4 text-xl font-bold text-gray-800 drop-shadow-sm">
-            Be Patient! 🌱
+            Be Patient! <span className="ml-2">🌱</span>
           </h3>
           <p className="leading-relaxed text-gray-800">
             Good investors wait for years, not days. Your money has time to grow

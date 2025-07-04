@@ -156,7 +156,8 @@ export default function StockCard({ symbol, stock }: StockCardProps) {
       <div
         className={`relative overflow-hidden rounded-3xl border-4 ${theme.border} ${theme.bg} magical-hover bounce-in p-5 shadow-lg transition-all duration-300`}
       >
-        <div className="mb-5 flex items-center justify-between border-b-2 border-gray-100 pb-4">
+        <div className="mb-5 flex flex-col items-center justify-center border-b-2 border-gray-100 pb-4 text-center">
+          <div className="mb-2 text-4xl">{company.logo}</div>
           <div>
             <h3 className="mb-1 text-xl text-gray-800">{company.name}</h3>
             <span
@@ -165,10 +166,9 @@ export default function StockCard({ symbol, stock }: StockCardProps) {
               {symbol}
             </span>
           </div>
-          <div className="text-4xl">{company.logo}</div>
         </div>
-        <div className="mb-5">
-          <div className="mb-4 flex items-baseline gap-1">
+        <div className="mb-5 text-center">
+          <div className="mb-4 flex flex-col items-center">
             <span className="text-3xl font-bold text-gray-800">
               {stock.shares}
             </span>
