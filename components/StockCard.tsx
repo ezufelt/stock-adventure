@@ -133,14 +133,14 @@ const COMPANY_THEMES: Record<
     accent: 'bg-dreamy-yellow',
   },
   ETSY: {
-    bg: 'bg-gradient-to-br from-dreamy-pink to-pink-100',
-    border: 'border-dreamy-pink',
-    accent: 'bg-dreamy-pink',
+    bg: 'bg-gradient-to-br from-magical-purple to-purple-100',
+    border: 'border-magical-purple',
+    accent: 'bg-magical-purple',
   },
   SNAP: {
-    bg: 'bg-gradient-to-br from-dreamy-yellow to-yellow-100',
-    border: 'border-dreamy-yellow',
-    accent: 'bg-dreamy-yellow',
+    bg: 'bg-gradient-to-br from-sunset-orange to-orange-100',
+    border: 'border-sunset-orange',
+    accent: 'bg-sunset-orange',
   },
 };
 

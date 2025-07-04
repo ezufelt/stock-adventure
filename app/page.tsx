@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import {
   getAllPortfolioDataWithAltText,
   PortfolioData,
@@ -5,19 +8,35 @@ import {
 import PortfolioOverview from '../components/PortfolioOverview';
 import StockCard from '../components/StockCard';
 import EducationSection from '../components/EducationSection';
+import ChartModal from '../components/ChartModal';
 
-export default async function Home() {
-  let portfolioData: PortfolioData = {};
-  let chartSVG = '';
+export default function Home() {
+  const [portfolioData, setPortfolioData] = useState<PortfolioData>({});
+  const [chartSVG, setChartSVG] = useState('');
+  const [showChartModal, setShowChartModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  try {
-    const result = await getAllPortfolioDataWithAltText();
-    portfolioData = result.portfolioData;
-    chartSVG = result.chartSVG;
-  } catch (error) {
-    console.error('Error fetching portfolio data:', error);
-    portfolioData = {};
-    chartSVG = '';
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result = await getAllPortfolioDataWithAltText();
+        setPortfolioData(result.portfolioData);
+        setChartSVG(result.chartSVG);
+      } catch (error) {
+        console.error('Error fetching portfolio data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="mx-auto my-3 max-w-6xl rounded-3xl bg-white p-3 shadow-lg md:my-5 md:p-5">
+        <div className="loading-pulse h-96 rounded-2xl"></div>
+      </div>
+    );
   }
 
   const portfolioTotal = Object.values(portfolioData).reduce(
@@ -72,14 +91,13 @@ export default async function Home() {
         <h2 className="text-gradient mb-4 text-center text-2xl font-bold drop-shadow-lg md:mb-5 md:text-3xl">
           How My Money Grew This Month
         </h2>
-        <div className="relative flex h-96 items-center justify-center md:h-[400px]">
-          {chartSVG ? (
-            <div dangerouslySetInnerHTML={{ __html: chartSVG }} />
-          ) : (
-            <div className="flex h-full items-center justify-center text-gray-500">
-              Chart data unavailable
-            </div>
-          )}
+        <div className="relative flex h-32 items-center justify-center">
+          <button
+            onClick={() => setShowChartModal(true)}
+            className="border-dreamy-blue bg-dreamy-blue magical-hover rounded-full border-4 px-8 py-4 text-xl font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+          >
+            📊 Last 30 Days
+          </button>
         </div>
       </section>
 
@@ -103,6 +121,13 @@ export default async function Home() {
       <div className="slide-up">
         <EducationSection />
       </div>
+      
+      {showChartModal && (
+        <ChartModal
+          chartSVG={chartSVG}
+          onClose={() => setShowChartModal(false)}
+        />
+      )}
     </div>
   );
 }

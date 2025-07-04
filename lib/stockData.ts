@@ -245,8 +245,8 @@ function generateChartSVG(portfolioData: PortfolioData): string {
       AAPL: '#FFB3E6', // dreamy pink
       RBLX: '#B3E5FC', // dreamy blue
       IBIT: '#FFF9C4', // dreamy yellow
-      ETSY: '#FFB3E6', // dreamy pink
-      SNAP: '#FFF9C4', // dreamy yellow
+      ETSY: '#E1BEE7', // magical purple
+      SNAP: '#FFB74D', // sunset orange
     };
 
     const dateLabels = generateChartDateLabels();
@@ -273,7 +273,7 @@ function generateChartSVG(portfolioData: PortfolioData): string {
       chartHeight - ((value - minPrice) / (maxPrice - minPrice)) * chartHeight;
 
     // Generate SVG
-    let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="background: white; font-family: 'Comic Sans MS', cursive, sans-serif;" role="img" aria-labelledby="chart-title" aria-describedby="chart-desc">`;
+    let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="background: white; font-family: system-ui, -apple-system, sans-serif;" role="img" aria-labelledby="chart-title" aria-describedby="chart-desc">`;
 
     // Accessibility elements
     svg += `<title id="chart-title">Stock Price Performance - Last 30 Days</title>`;
@@ -295,7 +295,7 @@ function generateChartSVG(portfolioData: PortfolioData): string {
       svg += `<line x1="${margin.left}" y1="${y}" x2="${margin.left + chartWidth}" y2="${y}" stroke="#f0f0f0" stroke-width="1"/>`;
 
       // Y-axis label
-      svg += `<text x="${margin.left - 10}" y="${y + 4}" text-anchor="end" font-size="12" fill="#666">$${value.toFixed(2)}</text>`;
+      svg += `<text x="${margin.left - 10}" y="${y + 4}" text-anchor="end" font-size="14" fill="#666">$${value.toFixed(2)}</text>`;
     }
 
     // X-axis labels
@@ -303,7 +303,7 @@ function generateChartSVG(portfolioData: PortfolioData): string {
     dateLabels.forEach((label, index) => {
       if (index % xTickInterval === 0 || index === dateLabels.length - 1) {
         const x = margin.left + xScale(index);
-        svg += `<text x="${x}" y="${margin.top + chartHeight + 20}" text-anchor="middle" font-size="11" fill="#666">${label}</text>`;
+        svg += `<text x="${x}" y="${margin.top + chartHeight + 20}" text-anchor="middle" font-size="13" fill="#666">${label}</text>`;
       }
     });
 
@@ -337,14 +337,14 @@ function generateChartSVG(portfolioData: PortfolioData): string {
       });
 
       if (path) {
-        svg += `<path d="${path}" stroke="${color}" stroke-width="3" fill="none"/>`;
+        svg += `<path d="${path}" stroke="${color}" stroke-width="4" fill="none"/>`;
 
         // Add points
         stock.priceHistory.forEach((price, index) => {
           if (price !== null) {
             const x = margin.left + xScale(index);
             const y = margin.top + yScale(price);
-            svg += `<circle cx="${x}" cy="${y}" r="3" fill="${color}" stroke="white" stroke-width="2"/>`;
+            svg += `<circle cx="${x}" cy="${y}" r="4" fill="${color}" stroke="white" stroke-width="2"/>`;
           }
         });
       }
@@ -360,13 +360,13 @@ function generateChartSVG(portfolioData: PortfolioData): string {
       const x = legendStartX + index * legendItemWidth;
 
       // Legend line
-      svg += `<line x1="${x}" y1="${legendY}" x2="${x + 20}" y2="${legendY}" stroke="${color}" stroke-width="3"/>`;
+      svg += `<line x1="${x}" y1="${legendY}" x2="${x + 20}" y2="${legendY}" stroke="${color}" stroke-width="4"/>`;
 
       // Legend dot
-      svg += `<circle cx="${x + 10}" cy="${legendY}" r="3" fill="${color}" stroke="white" stroke-width="2"/>`;
+      svg += `<circle cx="${x + 10}" cy="${legendY}" r="4" fill="${color}" stroke="white" stroke-width="2"/>`;
 
       // Legend text
-      svg += `<text x="${x + 30}" y="${legendY + 4}" font-size="12" fill="#333">${symbol}</text>`;
+      svg += `<text x="${x + 30}" y="${legendY + 4}" font-size="14" font-weight="bold" fill="#333">${symbol}</text>`;
     });
 
     svg += '</svg>';
