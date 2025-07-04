@@ -30,6 +30,7 @@ export interface PortfolioData {
 export interface PortfolioDataWithAltText {
   portfolioData: PortfolioData;
   chartAltText: string;
+  chartSVG: string;
 }
 
 const PORTFOLIO_POSITIONS: Record<string, StockPosition> = {
@@ -219,13 +220,172 @@ export async function getAllPortfolioData(): Promise<PortfolioData> {
   return portfolioData;
 }
 
+function generateChartDateLabels(): string[] {
+  const dates: string[] = [];
+  const today = new Date();
+  for (let i = 29; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    dates.push(
+      date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    );
+  }
+  return dates;
+}
+
+function generateChartSVG(portfolioData: PortfolioData): string {
+  try {
+    const width = 800;
+    const height = 400;
+    const margin = { top: 60, right: 20, bottom: 100, left: 60 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+
+    const CHART_COLORS: Record<string, string> = {
+      AAPL: '#FFB3E6', // dreamy pink
+      RBLX: '#B3E5FC', // dreamy blue
+      IBIT: '#FFF9C4', // dreamy yellow
+      ETSY: '#FFB3E6', // dreamy pink
+      SNAP: '#FFF9C4', // dreamy yellow
+    };
+
+    const dateLabels = generateChartDateLabels();
+
+    // Get all price data
+    const allPrices: number[] = [];
+    Object.values(portfolioData).forEach(stock => {
+      if (stock.priceHistory) {
+        allPrices.push(...stock.priceHistory.filter(p => p !== null));
+      }
+    });
+
+    if (allPrices.length === 0) {
+      return '<svg></svg>';
+    }
+
+    const minPrice = Math.min(...allPrices) * 0.95;
+    const maxPrice = Math.max(...allPrices) * 1.05;
+
+    // Create scales
+    const xScale = (index: number) =>
+      (index / (dateLabels.length - 1)) * chartWidth;
+    const yScale = (value: number) =>
+      chartHeight - ((value - minPrice) / (maxPrice - minPrice)) * chartHeight;
+
+    // Generate SVG
+    let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="background: white; font-family: 'Comic Sans MS', cursive, sans-serif;" role="img" aria-labelledby="chart-title" aria-describedby="chart-desc">`;
+
+    // Accessibility elements
+    svg += `<title id="chart-title">Stock Price Performance - Last 30 Days</title>`;
+    svg += `<desc id="chart-desc">A line chart showing how stock prices changed over the last 30 days. Each colored line represents a different stock: ${Object.keys(portfolioData).join(', ')}.</desc>`;
+
+    // Title
+    svg += `<text x="${width / 2}" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">Stock Price Performance - Last 30 Days</text>`;
+
+    // Chart area background
+    svg += `<rect x="${margin.left}" y="${margin.top}" width="${chartWidth}" height="${chartHeight}" fill="none" stroke="#ddd" stroke-width="1"/>`;
+
+    // Y-axis labels and grid lines
+    const yTicks = 5;
+    for (let i = 0; i <= yTicks; i++) {
+      const value = minPrice + (maxPrice - minPrice) * (i / yTicks);
+      const y = margin.top + chartHeight - (i / yTicks) * chartHeight;
+
+      // Grid line
+      svg += `<line x1="${margin.left}" y1="${y}" x2="${margin.left + chartWidth}" y2="${y}" stroke="#f0f0f0" stroke-width="1"/>`;
+
+      // Y-axis label
+      svg += `<text x="${margin.left - 10}" y="${y + 4}" text-anchor="end" font-size="12" fill="#666">$${value.toFixed(2)}</text>`;
+    }
+
+    // X-axis labels
+    const xTickInterval = Math.floor(dateLabels.length / 6);
+    dateLabels.forEach((label, index) => {
+      if (index % xTickInterval === 0 || index === dateLabels.length - 1) {
+        const x = margin.left + xScale(index);
+        svg += `<text x="${x}" y="${margin.top + chartHeight + 20}" text-anchor="middle" font-size="11" fill="#666">${label}</text>`;
+      }
+    });
+
+    // Y-axis title
+    svg += `<text x="20" y="${margin.top + chartHeight / 2}" text-anchor="middle" font-size="14" fill="#333" transform="rotate(-90, 20, ${margin.top + chartHeight / 2})">Price ($)</text>`;
+
+    // X-axis title
+    svg += `<text x="${margin.left + chartWidth / 2}" y="${height - 20}" text-anchor="middle" font-size="14" fill="#333">Date</text>`;
+
+    // Draw lines for each stock
+    const stocks = Object.entries(portfolioData).sort(([a], [b]) =>
+      a.localeCompare(b)
+    );
+    stocks.forEach(([symbol, stock]) => {
+      if (!stock.priceHistory || stock.priceHistory.length === 0) return;
+
+      const color = CHART_COLORS[symbol] || '#999';
+      let path = '';
+
+      stock.priceHistory.forEach((price, index) => {
+        if (price !== null) {
+          const x = margin.left + xScale(index);
+          const y = margin.top + yScale(price);
+
+          if (path === '') {
+            path = `M ${x} ${y}`;
+          } else {
+            path += ` L ${x} ${y}`;
+          }
+        }
+      });
+
+      if (path) {
+        svg += `<path d="${path}" stroke="${color}" stroke-width="3" fill="none"/>`;
+
+        // Add points
+        stock.priceHistory.forEach((price, index) => {
+          if (price !== null) {
+            const x = margin.left + xScale(index);
+            const y = margin.top + yScale(price);
+            svg += `<circle cx="${x}" cy="${y}" r="3" fill="${color}" stroke="white" stroke-width="2"/>`;
+          }
+        });
+      }
+    });
+
+    // Legend
+    let legendY = height - 80;
+    const legendItemWidth = 120;
+    const legendStartX = (width - stocks.length * legendItemWidth) / 2;
+
+    stocks.forEach(([symbol], index) => {
+      const color = CHART_COLORS[symbol] || '#999';
+      const x = legendStartX + index * legendItemWidth;
+
+      // Legend line
+      svg += `<line x1="${x}" y1="${legendY}" x2="${x + 20}" y2="${legendY}" stroke="${color}" stroke-width="3"/>`;
+
+      // Legend dot
+      svg += `<circle cx="${x + 10}" cy="${legendY}" r="3" fill="${color}" stroke="white" stroke-width="2"/>`;
+
+      // Legend text
+      svg += `<text x="${x + 30}" y="${legendY + 4}" font-size="12" fill="#333">${symbol}</text>`;
+    });
+
+    svg += '</svg>';
+    return svg;
+  } catch (error) {
+    console.error('Error generating SVG chart:', error);
+    return '<svg width="800" height="400"><text x="400" y="200" text-anchor="middle" fill="#999">Chart unavailable</text></svg>';
+  }
+}
+
 export async function getAllPortfolioDataWithAltText(): Promise<PortfolioDataWithAltText> {
   const { generateChartAltText } = await import('./chartAnalysis');
   const portfolioData = await getAllPortfolioData();
   const chartAltText = generateChartAltText(portfolioData);
+  const chartSVG = generateChartSVG(portfolioData);
 
   return {
     portfolioData,
     chartAltText,
+    chartSVG,
   };
 }

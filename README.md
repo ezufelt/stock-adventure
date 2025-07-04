@@ -6,7 +6,7 @@ An educational web app that teaches kids about stock investing through an intera
 
 - **Real-time Stock Data**: Live prices and portfolio tracking
 - **Educational Content**: Kid-friendly explanations of investing concepts
-- **Interactive Charts**: 30-day performance visualization
+- **Performance Charts**: 30-day stock price visualization
 - **Child-Friendly Design**: Playful colors, animations, and Comic Sans typography
 - **Fully Responsive**: Works on desktop, tablet, and mobile
 
@@ -27,7 +27,7 @@ An educational web app that teaches kids about stock investing through an intera
 - **Next.js 15** - React framework with App Router
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling
-- **Chart.js** - Interactive charts
+- **Custom SVG Charts** - Server-side generated interactive charts
 - **Yahoo Finance API** - Real-time stock data
 
 ## 🚀 Getting Started

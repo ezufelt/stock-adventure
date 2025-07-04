@@ -11,6 +11,7 @@
 
   body {
     font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-display: swap;
     background: linear-gradient(135deg, #fff9c4 0%, #ffb3e6 50%, #b3e5fc 100%);
     min-height: 100vh;
     color: #2c3e50;

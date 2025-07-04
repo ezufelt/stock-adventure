@@ -32,8 +32,8 @@ export default function PortfolioOverview({
 
   return (
     <section className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
-      <div className="border-dreamy-pink from-dreamy-yellow via-dreamy-pink to-dreamy-blue magical-hover rounded-3xl border-4 bg-gradient-to-br p-8 text-center shadow-lg lg:col-span-2">
-        <h2 className="mb-4 text-2xl text-gray-800">Portfolio Total</h2>
+      <div className="border-dreamy-yellow from-dreamy-yellow to-dreamy-yellow magical-hover rounded-3xl border-4 bg-gradient-to-br via-yellow-100 p-8 text-center shadow-lg lg:col-span-2">
+        <h2 className="mb-4 text-2xl text-gray-800">My Money Now</h2>
         <div className="my-3 text-5xl font-bold text-gray-800 drop-shadow-sm">
           {formatCurrency(total)}
         </div>
@@ -51,7 +51,7 @@ export default function PortfolioOverview({
         </div>
         <div className="mt-4 border-t-2 border-gray-200 pt-4">
           <p className="mb-2 text-base text-gray-500">
-            Original Investment:{' '}
+            Money I Started With:{' '}
             <span className="font-bold text-gray-800">
               {formatCurrency(loanAmount)}
             </span>
@@ -61,16 +61,14 @@ export default function PortfolioOverview({
 
       <div className="flex flex-col gap-4">
         <div className="from-dreamy-blue border-dreamy-blue magical-hover rounded-2xl border-3 bg-gradient-to-br to-blue-100 p-5 text-center shadow-md">
-          <h3 className="mb-3 text-base text-gray-800">Best Performer</h3>
+          <h3 className="mb-3 text-base text-gray-800">Best Stock</h3>
           <div className="my-2 text-3xl font-bold text-gray-800">
             {bestPerformer}
           </div>
-          <div className="text-sm font-bold text-green-600">
-            Performance Leader
-          </div>
+          <div className="text-sm font-bold text-green-600">Winner!</div>
         </div>
         <div className="from-dreamy-yellow border-dreamy-yellow magical-hover rounded-2xl border-3 bg-gradient-to-br to-yellow-100 p-5 text-center shadow-md">
-          <h3 className="mb-3 text-base text-gray-800">Total Stocks</h3>
+          <h3 className="mb-3 text-base text-gray-800">My Stocks</h3>
           <div className="my-2 text-3xl font-bold text-gray-800">
             {stockCount}
           </div>

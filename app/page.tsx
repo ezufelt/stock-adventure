@@ -4,21 +4,20 @@ import {
 } from '../lib/stockData';
 import PortfolioOverview from '../components/PortfolioOverview';
 import StockCard from '../components/StockCard';
-import PortfolioChart from '../components/PortfolioChart';
 import EducationSection from '../components/EducationSection';
 
 export default async function Home() {
   let portfolioData: PortfolioData = {};
-  let chartAltText = '';
+  let chartSVG = '';
 
   try {
     const result = await getAllPortfolioDataWithAltText();
     portfolioData = result.portfolioData;
-    chartAltText = result.chartAltText;
+    chartSVG = result.chartSVG;
   } catch (error) {
     console.error('Error fetching portfolio data:', error);
     portfolioData = {};
-    chartAltText = '30-day portfolio performance chart: Data unavailable.';
+    chartSVG = '';
   }
 
   const portfolioTotal = Object.values(portfolioData).reduce(
@@ -54,7 +53,7 @@ export default async function Home() {
           My Stock Adventure
         </h1>
         <p className="text-lg font-bold text-gray-800 drop-shadow-sm md:text-xl">
-          Learning to invest like a pro! 🚀
+          Learning to save and grow money! 🚀
         </p>
       </header>
 
@@ -71,13 +70,16 @@ export default async function Home() {
 
       <section className="border-dreamy-blue from-dreamy-blue magical-hover slide-up my-10 rounded-2xl border-4 bg-gradient-to-br to-blue-50 p-6">
         <h2 className="text-gradient mb-4 text-center text-2xl font-bold drop-shadow-lg md:mb-5 md:text-3xl">
-          30-Day Performance Chart
+          How My Money Grew This Month
         </h2>
-        <div className="relative h-96 md:h-[400px]">
-          <PortfolioChart
-            portfolioData={portfolioData}
-            altText={chartAltText}
-          />
+        <div className="relative flex h-96 items-center justify-center md:h-[400px]">
+          {chartSVG ? (
+            <div dangerouslySetInnerHTML={{ __html: chartSVG }} />
+          ) : (
+            <div className="flex h-full items-center justify-center text-gray-500">
+              Chart data unavailable
+            </div>
+          )}
         </div>
       </section>
 
@@ -85,7 +87,7 @@ export default async function Home() {
 
       <section className="slide-up my-10">
         <h2 className="text-gradient sparkle relative mb-6 text-center text-3xl font-bold drop-shadow-lg md:mb-8 md:text-4xl">
-          My Stock Holdings
+          My Stocks
         </h2>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-5 md:gap-5 lg:grid-cols-3">
           {Object.entries(portfolioData)

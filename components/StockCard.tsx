@@ -128,14 +128,14 @@ const COMPANY_THEMES: Record<
     accent: 'bg-dreamy-blue',
   },
   IBIT: {
-    bg: 'bg-gradient-to-br from-sunset-orange to-orange-100',
-    border: 'border-sunset-orange',
-    accent: 'bg-sunset-orange',
+    bg: 'bg-gradient-to-br from-dreamy-yellow to-yellow-100',
+    border: 'border-dreamy-yellow',
+    accent: 'bg-dreamy-yellow',
   },
   ETSY: {
-    bg: 'bg-gradient-to-br from-mint-green to-green-100',
-    border: 'border-mint-green',
-    accent: 'bg-mint-green',
+    bg: 'bg-gradient-to-br from-dreamy-pink to-pink-100',
+    border: 'border-dreamy-pink',
+    accent: 'bg-dreamy-pink',
   },
   SNAP: {
     bg: 'bg-gradient-to-br from-dreamy-yellow to-yellow-100',
