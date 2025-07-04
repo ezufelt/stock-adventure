@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        comic: ['Comic Sans MS', 'cursive', 'sans-serif'],
+        comic: ['OpenDyslexic', 'sans-serif'],
       },
       colors: {
         gold: '#FFD700',

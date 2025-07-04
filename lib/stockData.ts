@@ -328,7 +328,7 @@ function generateChartSVG(
       chartHeight - ((value - minPrice) / (maxPrice - minPrice)) * chartHeight;
 
     // Generate SVG
-    let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="background: white; font-family: system-ui, -apple-system, sans-serif;" role="img" aria-labelledby="chart-title" aria-describedby="chart-desc">`;
+    let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="background: white; font-family: OpenDyslexic, sans-serif;" role="img" aria-labelledby="chart-title" aria-describedby="chart-desc">`;
 
     // Accessibility elements
     svg += `<title id="chart-title">Stock Price Performance - Last 30 Days</title>`;
