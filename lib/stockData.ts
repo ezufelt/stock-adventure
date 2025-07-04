@@ -327,8 +327,8 @@ function generateChartSVG(
     const yScale = (value: number) =>
       chartHeight - ((value - minPrice) / (maxPrice - minPrice)) * chartHeight;
 
-    // Generate SVG
-    let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="background: white; font-family: OpenDyslexic, sans-serif;" role="img" aria-labelledby="chart-title" aria-describedby="chart-desc">`;
+    // Generate SVG with responsive viewBox
+    let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto; background: white; font-family: OpenDyslexic, sans-serif;" role="img" aria-labelledby="chart-title" aria-describedby="chart-desc">`;
 
     // Accessibility elements
     svg += `<title id="chart-title">Stock Price Performance - Last 30 Days</title>`;

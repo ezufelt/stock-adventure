@@ -15,60 +15,18 @@ export default function ChartModal({
   onClose,
 }: ChartModalProps) {
   const [isMobileDevice, setIsMobileDevice] = useState(false);
-  const [canRotate, setCanRotate] = useState(false);
-  const [originalOrientation, setOriginalOrientation] = useState<string | null>(
-    null
-  );
 
   useEffect(() => {
     // Use ua-parser-js for reliable mobile device detection
     const parser = new UAParser();
     const result = parser.getResult();
 
-    // Check if device is mobile or tablet (both benefit from landscape orientation)
+    // Check if device is mobile or tablet
     const isMobile =
       result.device.type === 'mobile' || result.device.type === 'tablet';
 
-    // Check if device can rotate (has orientation API with lock capability)
-    const hasOrientationAPI =
-      'screen' in window && 'orientation' in window.screen;
-    const canLockOrientation =
-      hasOrientationAPI && 'lock' in (window.screen.orientation as any);
-
     setIsMobileDevice(isMobile);
-    setCanRotate(canLockOrientation);
   }, []);
-
-  useEffect(() => {
-    // Handle mobile landscape rotation only if we can actually rotate
-    if (
-      isMobileDevice &&
-      canRotate &&
-      'screen' in window &&
-      'orientation' in window.screen
-    ) {
-      // Store original orientation
-      setOriginalOrientation(window.screen.orientation.type);
-
-      // Request landscape orientation
-      (window.screen.orientation as any).lock('landscape').catch(() => {
-        // Silently handle orientation lock failures
-      });
-    }
-
-    // Cleanup function to restore original orientation
-    return () => {
-      if (
-        isMobileDevice &&
-        canRotate &&
-        originalOrientation &&
-        'screen' in window &&
-        'orientation' in window.screen
-      ) {
-        (window.screen.orientation as any).unlock();
-      }
-    };
-  }, [isMobileDevice, canRotate, originalOrientation]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -112,11 +70,11 @@ export default function ChartModal({
       aria-describedby="modal-description"
     >
       <div
-        className={`relative max-h-[90vh] w-full animate-[modalSlideIn_0.3s_ease-out] overflow-y-auto rounded-3xl bg-white shadow-2xl ${isMobileDevice ? 'max-w-full' : 'max-w-5xl'}`}
+        className={`modal-container relative max-h-[90vh] w-full animate-[modalSlideIn_0.3s_ease-out] overflow-y-auto rounded-3xl bg-white shadow-2xl ${isMobileDevice ? 'max-w-full' : 'max-w-5xl'}`}
         tabIndex={-1}
       >
-        {/* Mobile rotation prompt - only show if mobile but can't auto-rotate */}
-        {isMobileDevice && !canRotate && (
+        {/* Mobile rotation prompt */}
+        {isMobileDevice && (
           <div className="from-dreamy-yellow to-dreamy-pink block bg-gradient-to-r p-4 text-center md:hidden landscape:hidden">
             <p className="text-sm font-bold text-gray-800">
               📱 Turn your phone sideways for the best chart view!

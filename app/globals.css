@@ -240,6 +240,11 @@
     }
   }
 
+  /* Modal smooth transitions for orientation changes */
+  .modal-container {
+    transition: all 0.2s ease;
+  }
+  
   /* Mobile optimizations */
   @media (max-width: 768px) {
     .sparkle::before {
