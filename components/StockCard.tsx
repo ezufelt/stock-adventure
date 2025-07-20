@@ -181,13 +181,13 @@ export default function StockCard({ symbol, stock }: StockCardProps) {
               {formatCurrency(stock.price)}
             </span>
             <span
-              className={`text-base font-bold ${(stock.change || 0) >= 0 ? 'text-green-600' : 'text-red-500'}`}
+              className={`text-base font-bold ${(stock.gainLoss || 0) >= 0 ? 'text-green-600' : 'text-red-500'}`}
             >
-              {stock.change !== null && (stock.change || 0) >= 0 ? '+' : ''}
-              {formatCurrency(stock.change)} (
-              {stock.change !== null && (stock.change || 0) >= 0 ? '+' : ''}
-              {stock.changePercent !== null
-                ? stock.changePercent.toFixed(2)
+              {stock.gainLoss !== null && (stock.gainLoss || 0) >= 0 ? '+' : ''}
+              {formatCurrency(stock.gainLoss)} (
+              {stock.gainLoss !== null && (stock.gainLoss || 0) >= 0 ? '+' : ''}
+              {stock.gainLossPercent !== null
+                ? stock.gainLossPercent.toFixed(2)
                 : '—'}
               %)
             </span>
