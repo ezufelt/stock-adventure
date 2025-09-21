@@ -22,14 +22,14 @@ export default async function Home() {
   const bestPerformer = Object.entries(portfolioData).reduce(
     (best, [symbol, stock]) => {
       if (
-        stock.changePercent !== null &&
-        stock.changePercent > best.changePercent
+        stock.gainLossPercent !== null &&
+        stock.gainLossPercent > best.gainLossPercent
       ) {
-        return { symbol, changePercent: stock.changePercent };
+        return { symbol, gainLossPercent: stock.gainLossPercent };
       }
       return best;
     },
-    { symbol: '', changePercent: -Infinity }
+    { symbol: '', gainLossPercent: -Infinity }
   );
 
   return (
