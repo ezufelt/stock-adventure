@@ -56,3 +56,4 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 **Secondary**: Parents and educators teaching financial concepts
 
 Built with ❤️ for the next generation of investors
+
